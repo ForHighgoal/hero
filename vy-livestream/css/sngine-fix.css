@@ -1,0 +1,69 @@
+.vy_lv_snginethemefix .navbar-wrapper>ul>li>a {
+    display: flex!important;
+    align-items: center;
+}
+.vy_lv_snginethemefix .vy_lv_gohomewbutton{
+    display: none!important;
+}
+.vy_lv_snginethemefix .vy_lv__globalpopup_close svg {
+    fill: rgb(144 144 144);
+    width: 14px;
+    height: 14px;
+    vertical-align: middle;
+    position: relative;
+    top: 8px;
+}.vy_lv_snginethemefix .vy_lv_dashboard .vy-lv-comments-section {
+    flex: 0.290!important;
+}
+.vy_lv_snginethemefix .main-header{
+    transition: transform .25s linear;
+}
+.vy_lv_snginethemefix.s_hideheader .main-header{
+    transform: translateZ(0) translateY(-60px);
+}
+.vy_lv_a1{
+    top:70px;
+}
+.vy_lv_snginethemefix.s_hideheader .vy_lv_a1{
+    transition: top .25s linear;
+    top:10px;
+}
+ .vy_lv_snginethemefix.s_showheader .main-header{
+        transition: top .25s linear;
+ 
+}
+
+.vy_lv_snginethemefix.s_showheader .vy_lv_dashboard .vy-lv-comments-section{
+  flex: 0.450!important;
+
+}.vylv_sngine_live_processing {
+    margin: 0 auto;
+    padding: 16px;
+    background: rgb(255 229 201);
+    font-size: 14.5px;
+}
+
+.night-mode .vylv_sngine_live_processing {
+
+color:#000;
+}.nm_tx {
+ 
+    flex: 0.9;
+}.el-switch {
+    display: flex;
+ 
+    place-self: center;
+}.vy_lv_mob_popup_allincard .vy_lv_mob_newpost_desc {
+    resize: none;
+    overflow: auto;
+    min-height: 50px;
+    color: rgb(85 85 85);
+    max-height: 57px;
+    font-size: 15.5px;
+} .vy_lv__mobpost_title {
+    position: absolute;
+    width: 100%;
+    height: auto!important;
+}.vy_lv_mob_popup_allincard .vy_lv_mob_newpost_title{
+    height: 40px;
+} 

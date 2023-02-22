@@ -1,0 +1,202 @@
+
+{if (isset($_REQUEST['lend']) || isset($_GET['lend']))}
+<script>
+window.vy_lv_lend = 1;
+</script>
+{/if}
+<script id="vy_lvst_script">
+{literal}
+var vy_lvst = function(){};
+(function() {
+    var po = document.createElement('script');
+    po.type = 'text/javascript';
+    po.async = true;
+    po.src = 'https://webrtc.github.io/adapter/adapter-latest.js';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(po, s);
+})();
+{/literal}
+ 
+</script> 
+<script type="text/javascript" src="/vy-livestream/js/getAssets.js?v={$wo['vy-livestream']['version']}"></script>
+<script type="text/javascript">
+
+		var  
+		 vy_lv_version = "{$wo['vy-livestream']['version']}",
+		 vy_lv_assets_path = "{$system['system_url']}{DIRECTORY_SEPARATOR}vy-livestream",
+		 vy_lv_themes = ["default"],
+		 vy_lvst_code = "{$wo['vy-livestream']['license_key']}",
+		 vy_lvst_server_name = "{$wo['vy-livestream']['nodejs_server']['url']}",
+		 vy_lvst_socket_url = "{$wo['vy-livestream']['nodejs_server']['full_url']}",
+		 vy_lvst_rtmp_app_name = "/{$wo['vy-livestream']['record']['app_name']}/",
+		 vy_lvst_rtmp_url = "{$wo['vy-livestream']['nodejs_server']['RTMP_URL']}",
+		 vy_lvst_stream_rtmp_url = vy_lvst_rtmp_url+"{$wo['vy-livestream']['record']['stream_key_prefix']}-{md5($wo['user']['user_id'])}.flv",
+		 vy_lvst_website_host = "{$wo['vy-livestream']['host']}",
+		 vy_lvst_assets = "{$wo['vy-livestream']['plugin_assets']}",
+	     vy_lvst_w_theme_custom = "{$wo['config']['theme']}",
+		 vy_lvst_w_theme = vy_lv_themes.includes(vy_lvst_w_theme_custom) ? vy_lvst_w_theme_custom : "{$wo['vy-livestream']['original_theme_name']}",
+		 vy_lvst_uid = {$wo['user']['user_id']},
+		 vy_lvst_muid = "{md5($wo['user']['user_id'])}",
+		 vy_lvst_user = {json_encode(LIVE_STREAM::index_userdetails())},
+		 vy_lvst_reconnecting = {$wo['vy-livestream']['record']['reconnecting']},
+		 vy_lvst_svgi = {json_encode(LIVE_STREAM::getSvgIcons())},
+		 vy_lv_reactions = {json_encode(LIVE_STREAM::getReactionsBtns())},
+		 vy_lv_privacy_ops = {json_encode(LIVE_STREAM::getPrivacyOpts())},
+		 vy_lv_recording = {LIVE_STREAM::isRecording()},
+		 vy_lv_recording_audio_bits = {LIVE_STREAM::recordingBits('audio')},
+		 vy_lv_recording_video_bits = {LIVE_STREAM::recordingBits()},
+		 vy_lv_recording_fr_msec = {LIVE_STREAM::fr_miliseconds()},
+		 vy_lv_rec_type = "{LIVE_STREAM::recType()}",
+		 vy_lvst_sounds = {json_encode(LIVE_STREAM::getSounds())},
+		 vy_lvst_away_desktop = {json_encode(LIVE_STREAM::awayDesktop())},
+		 vy_lvst_lang = {json_encode(LIVE_STREAM::getLLang())};
+{literal}
+		 if(!vy_lv_themes.includes(vy_lvst_w_theme)) alert('Sorry, this theme is not supported.')
+ 
+   const vy_lv_js_assets = [
+   							{"loadingios":["/lib/loadingios/js/iosOverlay.js",
+										  "/lib/loadingios/js/spin.min.js"]},
+							{"socket.io":["check","/lib/socket.io/socket.io.2.3.0.js"]},
+							{"kurento": "/lib/kurento/bower_components/kurento-utils/js/kurento-utils.min.js"},
+							{"flv":"/lib/flv/flv.min.1.5.0.js"},
+							{"easytimer" : "/lib/easytimer/js/easytimer.min.js"},
+							{"createjs":"/lib/createjs/createjs.min.js"},
+							//{"record":"/lib/record/RecordRTC.js"},
+							{"ddslick":"/lib/ddslick/jquery.ddslick.min.js"},
+							{"floating":"/lib/floating/floating.js"},
+							{"sweetalert":"/lib/sweetalert/js/sweetalert2.min.js"},
+							{"emoji":"/lib/emoji/emoji.js"},
+							{"meteorEmoji":"/lib/meteorEmoji/meteorEmoji.min.js"},
+							{"notify":"/lib/notify/notify.min.js"},
+							{"mobselect":"/lib/mobselect/js/mobileSelect.js"},
+							{"ionic":["module","/lib/ionic/js/ionic.esm.js","nomodule","/lib/ionic/js/ionic.js"]},
+							{"cupertino":"/lib/cupertino/cupertino-pane.min.js"},
+							{"liveStream":"/js/liveStream.js"},
+   
+   ];
+   const vy_lv_css_assets = [
+   							 {"sngine-reset":"/css/sngine-fix.css"},
+   							 {"loadingios":"/lib/loadingios/css/iosOverlay.css"},
+							 {"style":"/css/style.css"},
+							 {"three_dots_loading":"/lib/three-dots-loading/three-dots.min.css"},
+							 {"sweetalert":"/lib/sweetalert/css/sweetalert2.min.css"},
+							 {"loading_intro":"/lib/loading_intro/css/style.css"},
+							 {"ionic":"/lib/ionic/css/ionic.bundle.css"},
+							 {"mobselect":"/lib/mobselect/css/mobileSelect.css"},
+							 {"checkbox" : "/lib/checkbox/css/checkbox.min.css"}
+   ];
+     
+	 
+   const vy_lv_init_opts = {
+			'target':'.btn-go-live',
+			'button_title':vy_lvst_lang.go_live,
+			'button_icon': vy_lvst_svgi.golive_ic,
+			'body': document.body
+		};	 
+   VYLV_ASSETS.init({"version":vy_lv_version,"path":vy_lv_assets_path,"css":vy_lv_css_assets,"js":vy_lv_js_assets});
+   VYLV_ASSETS.load(function() { 
+ 
+ 
+		vy_lvst = new VY_LIVE_STREAM(vy_lv_init_opts);
+ 
+		if(window.location.pathname.includes('livestream')){
+		
+			$('html').addClass('vy_lv_snginethemefix');
+		
+		} 
+
+		if(window.vy_lv_lend){
+			setTimeout(function(){
+				
+			const Toast = Swal.mixin({
+			  toast: true,
+			  position: 'top-end',
+			  showConfirmButton: false,
+			  timer: 6000,
+			  timerProgressBar: true,
+			  didOpen: (toast) => {
+				toast.addEventListener('mouseenter', Swal.stopTimer)
+				toast.addEventListener('mouseleave', Swal.resumeTimer)
+			  }
+			  ,
+			  didClose: () => {
+			
+
+			  }
+			})
+
+			Toast.fire({
+			  icon: 'success',
+			  title: vy_lvst_lang.we_process_your_stream
+			});
+	 
+			},1000);
+			window.history.replaceState({}, document.title, "/" );
+		}
+ 
+   });
+    
+if(vy_lvst_w_theme != 'wondertag')
+$(document).on('click.VY_LV_CREATEBUTTON','.btn-go-live,[data-ajax="?link1=live"]',function(e){
+	e.preventDefault();
+	e.stopImmediatePropagation();
+	if(!$('body').find('#vy_lv_startbutton').length)
+	createInitButtonv2();
+	
+});
+else 
+$(document).on('click.VY_LV_CREATEBUTTON','.btn.live',function(e){
+	e.preventDefault();
+	e.stopImmediatePropagation();
+
+	if(!$('body').find('#vy_lv_startbutton').length)
+	createInitButtonv2_wondertag();
+});
+ 
+
+function createInitButtonv2_wondertag(){
+
+	 let loading_css = '<span data-vylvinitbutton="'+vy_lv_init_opts.target+'" class="vy_lv_btn_ic_loading vy_lv_wondertag"></span>';
+	 let el_to_replace = $(document).find('#vy_lv_startbutton').length ? $(document).find('#vy_lv_startbutton') : $(document).find(vy_lv_init_opts.target);
+
+
+		if(vy_lvst_w_theme == 'wondertag'){
+			if(!$(document).find('.vy_lv_btn_ic_loading').length)
+				$(document).find('.btn.live').replaceWith(loading_css);
+		}
+	 
+	 if(typeof vy_lvst.generateInitButton == 'undefined')
+			setTimeout(createInitButtonv2_wondertag,1000);
+	   else 
+			setTimeout(function(){ vy_lvst.generateInitButton('wondertag',1);},1500);
+	  
+	
+}
+function createInitButtonv2(){
+
+	 let loading_css = '<span data-vylvinitbutton="'+vy_lv_init_opts.target+'" class="vy_lv_btn_ic_loading"></span>';
+	 let el_to_replace = $(document).find('#vy_lv_startbutton').length ? $(document).find('#vy_lv_startbutton') : $(document).find(vy_lv_init_opts.target);
+
+	 if(vy_lvst_w_theme == 'sunshine'){
+	 
+	 el_to_replace = $(document).find('[data-ajax="?link1=live"]');
+	 
+	 } 
+ 
+
+		if(vy_lvst_w_theme == 'wowonder' || vy_lvst_w_theme == 'sunshine')
+			el_to_replace.replaceWith(loading_css);
+	 
+ 
+	 
+	 if(typeof vy_lvst.generateInitButton == 'undefined')
+			setTimeout(createInitButtonv2,1000);
+	   else 
+			setTimeout(function(){ vy_lvst.generateInitButton(false,1);},1500);
+	  
+	
+}
+{/literal}
+</script>
+
+ 
